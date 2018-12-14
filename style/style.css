@@ -1,0 +1,19 @@
+@import url("navigation.css");
+@import url("site.css");
+@import url("welcome.css");
+@import url("notifications.css");
+@import url("login-register.css");
+@import url("meme-feed.css");
+@import url("my-memes.css");
+@import url("meme-details.css");
+@import url("user-profile.css");
+@import url("footer.css");
+@import url("user-meme-listings.css");
+
+#main-conteiner {
+    min-height: 80%;
+}
+
+.is-invalid{
+    border:1px solid red;
+}

@@ -1,0 +1,13 @@
+{{# each memes}}
+<div class="user-meme">
+    <a href="#" class="user-meme-title">{{title}}</a>
+    <a href=""> <img class="userProfileImage" src="{{imageUrl}}"></a>
+
+    
+    <div class="user-memes-buttons">
+        <a href="#/meme/edit?id={{_id}}" class="user-meme-btn">Edit</a>
+        <a href="#/meme/remove?id={{_id}}" class="user-meme-btn">Delete</a>
+    </div>
+    
+</div>
+{{/ each}}
