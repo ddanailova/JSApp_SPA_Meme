@@ -38,11 +38,10 @@ const userModel = (function () {
         return requester.get(profileUrl);
     }
 
-    // const remove = function (id) {
-    //     console.log("I am in user model");
-    //     let userRemoveUrl = userUrl + `/${id}`;
-    //     return requester.remove(userRemoveUrl);
-    // };
+    const remove = function (id) {
+        let userRemoveUrl = userUrl + `/${id}`;
+        return requester.remove(userRemoveUrl);
+    };
 
     const isAuthorized = function(){
         return !!storage.getData('authToken');
@@ -53,7 +52,7 @@ const userModel = (function () {
         logout,
         register,
         profile,
-        // remove,
+        remove,
         isAuthorized
     }
 }());

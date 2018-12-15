@@ -53,15 +53,17 @@ const user = (function () {
 
     const myProfile = function (ctx) {
         let userInfo = storage.getData('userInfo');
-
+        
         userModel.profile(userInfo.id).then(function (res) {
             ctx.user = res;
+            ctx.isOwner = true;
             memeModel.getByUser(userInfo.id).then(
                 function (data) {
                     if (data.lenght === 0) {
                         ctx.noMemes = true;
                     }
                     ctx.memes = data;
+                    ctx.memes.map((meme) => meme.isCreator = true);
                     ctx.loadPartials({
                         'userMemes': '../views/meme/usersMemes.hbs'
                     }).then(
@@ -81,16 +83,19 @@ const user = (function () {
     const creatorProfile = function (ctx) {
         let userInfo = storage.getData('userInfo');
         let creatorId = ctx.params.creatorId;
-        
+
         userModel.profile(creatorId).then(function (res) {
             ctx.user = res;
+            if(userInfo===creatorId){
+                ctx.isOwner = true;
+            }
             memeModel.getByUser(creatorId).then(
                 function (data) {
                     if (data.lenght === 0) {
                         ctx.noMemes = true;
                     }
                     ctx.memes = data;
-                    ctx.memes.map((meme) => meme.MakeInvisible === ctx.MakeInvisible);
+                    ctx.memes.map((meme) => userInfo===creatorId ?meme.isCreator = true:meme.isCreator===false);
                     ctx.loadPartials({
                         'userMemes': '../views/meme/usersMemes.hbs'
                     }).then(
@@ -120,20 +125,20 @@ const user = (function () {
         }
     };
 
-    // const remove = function (ctx) {
-    //     console.log("I am in user controller");
-    //     let userId = ctx.params.id;
-    //     userModel.remove(userId)
-    //         .then(function (res) {
-    //             console.log("Just made requst");
-    //             notifications.showInfo('User deleted.');
-    //             ctx.redirect('#/')
-    //         })
-    //         .catch(function (res) {
-    //             notifications.handleError(res);
-    //         });
+    const remove = function (ctx) {
+        let userId = ctx.params.id;
+        userModel.remove(userId)
+            .then(function (res) {
+                storage.deleteUser();
+                storage.deleteData();
+                notifications.showInfo('User deleted');
+                ctx.redirect('#/login');
+            })
+            .catch(function (res) {
+                notifications.handleError(res);
+            });
 
-    // };
+    };
 
     return {
         getLogin,
@@ -144,6 +149,6 @@ const user = (function () {
         myProfile,
         creatorProfile,
         initializeLogin,
-        // remove
+        remove
     };
 }());

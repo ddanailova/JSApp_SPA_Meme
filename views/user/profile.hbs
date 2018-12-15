@@ -3,15 +3,15 @@
     <img id="user-avatar-url" src="{{user.avatarUrl}}" alt="user-profile">
     <h1>{{user.username}}</h1>
     <h2>{{user.email}}</h2>
-
+    {{#if isOwner}}
     <a id="deleteUserButton" href="#/user/remove?id={{user._id}}">DELETE USER!</a>
-  
+    {{/if}}
     <p id="user-listings-title">User Memes</p>
     <div class="user-meme-listings">
-        {{# if noMemes}}
+        {{#if noMemes}}
         <p class="no-memes">No memes in database.</p>
-        {{ else }}
+        {{else}}
         {{> userMemes}}
-        {{/ if}}
+        {{/if}}
     </div>
 </div>
